@@ -22,7 +22,7 @@ private:
         return res_img;
     }
 
-public:
+protected:
 
     Image invert_img(Image &main_img) {
         Image res_img(main_img.width, main_img.height);
@@ -74,6 +74,47 @@ public:
                     image.setPixel(width, height, colour, image.getPixel(width, image.height - 1 - height, colour)); // Replace current pixel with corresponding pixel from the other side
                     image.setPixel(width, image.height - 1 - height, colour, temp); // Replace corresponding pixel from the other side with temp
                 }}}
+        return image;
+    }
+
+    Image gray(Image &image){
+        for(int i = 0 ; i <image.width ; i++){
+            for (int j = 0 ; j < image.height ; j ++){
+                unsigned int avg = 0 ;
+                for (int k = 0; k < 3; ++k) {
+                    avg += image(i , j , k);
+                }
+                avg /=3 ;
+                for (int k = 0; k < 3; ++k) {
+                    image(i , j , k) =avg;
+                }
+            }
+        }
+        return image;
+    }
+
+    Image low_brightness(Image &image){
+        for(int i = 0 ; i <image.width ; i++){
+            for (int j = 0 ; j < image.height ; j ++){
+                for (int k = 0; k < 3; ++k) {
+                    image(i,j,k) = image(i,j,k)* 1/2;
+                    if (image(i,j,k) < 0){
+                        image(i,j,k) = 0 ;
+                    }}}}
+        return image;
+    }
+
+    Image high_brightness(Image &image){
+        for(int i = 0 ; i <image.width ; i++){
+            for (int j = 0 ; j < image.height ; j ++){
+
+                for (int k = 0; k < 3; ++k) {
+                    if(image(i,j,k)*3/2 > 255){
+                        image(i,j,k) = 255 ;
+                    }
+                    else {
+                        image(i,j,k)= image(i,j,k) *3/2;
+                    }}}}
         return image;
     }
 
@@ -137,6 +178,8 @@ private:
         cout << "1) Rotate image" << endl;
         cout << "2) Invert image" << endl;
         cout << "3) Flip image" << endl;
+        cout << "4) Grayscale image" << endl;
+        cout << "5) brightness image" << endl;
     }
 
 
@@ -179,6 +222,10 @@ private:
         }
     }
 
+    Image brightness(Image &image){
+
+    }
+
     Image do_operation() {
         take_operation();
         int operation = take_choice(1, 3);
@@ -191,9 +238,15 @@ private:
                 return invert_img(img);
             }
             case 3:{
-
                 return flip_menu();
                 }
+            case 4:{
+                return gray(img);
+            }
+            case 5:{
+                return brightness(img);
+            }
+
 
         }}
 
