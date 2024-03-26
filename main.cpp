@@ -80,7 +80,7 @@ public:
 
 };
 
-class FrontEnd: public EditImage {
+class FrontEnd: private EditImage {
 private:
     Image img;
 
