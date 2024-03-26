@@ -34,6 +34,7 @@ public:
         return res_img;
     }
 
+
     Image rotate_img(Image &main_img, int rotation = 90) {
         if (rotation == 90){
             return rotate_img_90(main_img);
@@ -47,17 +48,35 @@ public:
             return rotate_img_90(rotated_img_270);
         }
     }
+
+
+    void flip_img_horizontally(Image &image) {
+        int temp;
+        for (int width = 0; width < image.width / 2; width++) { // Iterate only half width
+            for (int height = 0; height < image.height; height++) {
+                // Swap pixels horizontally
+                for(int colour = 0; colour < 3; colour++) {
+                    temp = image.getPixel(width, height, colour);
+                    image.setPixel(width, height, colour, image.getPixel(image.width - 1 - width, height, colour));
+                    image.setPixel(image.width - 1 - width, height, colour, temp);
+                }}}}
+
+
+    void flip_img_vertically(Image &image) {
+        int temp;
+        for (int height = 0; height < image.height / 2; height++) { // Iterate only half height
+            for (int width = 0; width < image.width; width++) {
+                // Swap pixels vertically
+                for(int colour = 0; colour < 3; colour++) { // Loop through each color channel (assuming RGB)
+                    temp = image.getPixel(width, height, colour); // Store the current pixel value in temp
+                    image.setPixel(width, height, colour, image.getPixel(width, image.height - 1 - height, colour)); // Replace current pixel with corresponding pixel from the other side
+                    image.setPixel(width, image.height - 1 - height, colour, temp); // Replace corresponding pixel from the other side with temp
+                }}}}
+
+
 };
 
 
-
 int main() {
-    EditImage Edit;
-    Image img("arrow.jpg");
-    Image res = Edit.rotate_img(img, 270);
-
-
-    res.saveImage("result.jpg");
-
     return 0;
 }
