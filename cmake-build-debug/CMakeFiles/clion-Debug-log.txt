@@ -20,6 +20,6 @@ CMake Deprecation Warning:
 -- Check for working CXX compiler: C:/Program Files/JetBrains/CLion 2023.3.4/bin/mingw/bin/g++.exe - skipped
 -- Detecting CXX compile features
 -- Detecting CXX compile features - done
--- Configuring done (0.9s)
+-- Configuring done (1.9s)
 -- Generating done (0.0s)
 -- Build files have been written to: D:/git/Photo_Editor_project/cmake-build-debug

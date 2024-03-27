@@ -1,16 +1,11 @@
 #include "Image_Class.h"
+#include <iomanip>
+#include <limits>
 using namespace std;
 
 class EditImage: protected Image {
 
 private:
-    static void copy_img(Image &img_from, Image &img_to) {
-        for (int width = 0; width < img_from.width; width++){
-            for (int height = 0; height < img_from.height; height++) {
-                for (int color = 0; color < 3; color++){
-                    img_to(width, height, color) = img_from(width, height, color);
-                }}}
-    }
 
     Image rotate_img_90(Image &main_img) {
         Image res_img(main_img.height, main_img.width);
@@ -125,25 +120,21 @@ class FrontEnd: private EditImage {
 private:
     Image img;
 
-    void load_img() {
+    string load_img() {
         cout << "Enter image name with  any of the following\n"
                 "extensions (.jpg, .bmp, .png, .tga):";
-
         string img_name;
         cin >> img_name;
-        while(true){
             try {
                 img.loadNewImage(img_name);
-                break;
+                cout << "Image loaded successfully" << endl;
+                return img_name;
             }
-            catch (invalid_argument){
-                cout <<"Please enter a valid image\n";
-                cin >>img_name;
+            catch (invalid_argument) {
             }
-
-        }
-        cout << "Image loaded successfully" << endl;
+        return load_img();
     }
+
 
     bool valid_output(const string& output_name) {
         if (output_name.find(".jpg") != string::npos) {
@@ -162,6 +153,7 @@ private:
     }
 
     void save_img(Image &res_img) {
+        cout << setw(25) << "Saving image" << endl;
         cout << "Enter image name with  any of the following\n"
                 "extensions (.jpg, .bmp, .png, .tga):";
         string img_name;
@@ -274,16 +266,16 @@ public:
     void run() {
         program_menu();
         while(true){
-            cout <<"1)load image\n"
-                   "2)exit the program\n";
+            cout <<"1) Load Image\n"
+                   "2) Exit program\n";
             int choice = take_choice(1,2);
             if (choice == 1){
-                load_img();
+                string img_name = load_img();
                 while(true){
                     Image res_img = do_operation();
                     save_img(res_img);
-                    cout << "1)apply new filter on the same image\n"
-                            "2)back to main menu\n";
+                    cout << "1) Apply new filter on loaded image: " << img_name << endl <<
+                            "2) Back to main menu\n";
                     int s_choice = take_choice(1,2);
                     if(s_choice== 1){
                         continue;
@@ -291,9 +283,7 @@ public:
                     else if(s_choice==2){
                         break ;
                     }
-                }
-
-            }
+                }}
             else{
                 break ;
             }
