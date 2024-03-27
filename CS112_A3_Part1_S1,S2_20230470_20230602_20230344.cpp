@@ -1,3 +1,50 @@
+/*
+ * project file : CS112_A3_Part1_S1,S2_20230470_20230602_20230344.cpp
+ * Mahmoud Hesham AbdEhafeez 20230602 : Did filters rotate image and invert image
+ * Yahia Diaa Eldien Mohammed 20230470 : Did filters brightness and grayscale
+ * Mohamed Esam AbdElmonem 20230344 : Did filter flip image
+ *
+ * This project is a photo editor program.
+ * The code is divided between two classes: FrontEnd and EditImage.
+ * FrontEnd is responsible for taking inputs from the user and printing outputs and running the program.
+ * EditImage is responsible for manipulating the image.
+ *
+ * algorithm :
+ *
+ * Rotate image:
+ * rotating image by 90 degrees by creating new image with exchanging the height and width of the image
+ * copying the pixels from the original image to the new image and return the new image
+ * rotation of any other degree is made by rotating the image 90 degrees multiple times
+ *
+ * Invert image:
+ * Inverting the image by creating a new image with the same size as the original image
+ * Exchanging each pixel value with its complement
+ * and return the new image
+ *
+ * Flip image:
+ * Iterate through the first half of the image's width.
+ * For each pixel in the row, swap it with the corresponding pixel on the opposite side of the image.
+ * Repeat this process for all colors in the pixel.
+ * Return the flipped image.
+ *
+ * grayscale:
+ * For each pixel in the image, calculate the average of the red, green, and blue values.
+ * Set all three color channels of the pixel to this average value to convert the image to grayscale.
+ * Return the grayscale image.
+ *
+ * Brightness:
+ *  Low brightness:
+ *      For each pixel in the image, reduce the brightness by dividing the red, green, and blue values by 2.
+ *      If any of the color values become negative, set them to 0.
+ *      Return the image with reduced brightness.
+ *
+ *  High brightness:
+ *      For each pixel in the image, increase the brightness by multiplying the red, green, and blue values by 1.5.
+ *      If any of the color values exceed 255, set them to 255.
+ *      Return the image with increased brightness.
+ *
+ *
+*/
 #include "Image_Class.h"
 #include <iomanip>
 #include <limits>
@@ -8,38 +55,51 @@ class EditImage: protected Image {
 private:
 
     Image rotate_img_90(Image &main_img) {
+        // Create a new image with swapped width and height
         Image res_img(main_img.height, main_img.width);
-        for(int height = 0; height < main_img.height; height++){
-            for(int width = 0; width < main_img.width; width++){
-                for(int color = 0; color < 3; color++){
+        // Iterate through the pixels of the main image
+        for (int height = 0; height < main_img.height; height++) {
+            for (int width = 0; width < main_img.width; width++) {
+                // Rotate the pixel values and assign them to the new image
+                for (int color = 0; color < 3; color++) {
                     res_img(height, width, color) = main_img(width, main_img.height - 1 - height, color);
                 }}}
+        // Return the rotated image
         return res_img;
     }
 
 protected:
 
     Image invert_img(Image &main_img) {
+        // Create a new image with the same dimensions
         Image res_img(main_img.width, main_img.height);
-        for (int width = 0; width < main_img.width; width++){
+        // Iterate through the pixels of the main image
+        for (int width = 0; width < main_img.width; width++) {
             for (int height = 0; height < main_img.height; height++) {
-                for (int color = 0; color < 3; color++){
+                // Invert the color values and assign them to the new image
+                for (int color = 0; color < 3; color++) {
                     res_img(width, height, color) = 255 - main_img(width, height, color);
                 }}}
+        // Return the inverted image
         return res_img;
     }
 
 
     Image rotate_img(Image &main_img, int rotation = 90) {
-        if (rotation == 90){
+        // The rotation is achieved by calling the rotate_img_90 function multiple times based on the desired angle
+
+        // Rotate the image by 90 degrees
+        if (rotation == 90) {
             return rotate_img_90(main_img);
         }
+        // Rotate the image by 180 degrees
         Image rotated_img_180 = rotate_img_90(main_img);
-        if (rotation == 180){
+        if (rotation == 180) {
             return rotate_img_90(rotated_img_180);
         }
+        // Rotate the image by 270 degrees
         Image rotated_img_270 = rotate_img_90(rotated_img_180);
-        if (rotation == 270){
+        if (rotation == 270) {
             return rotate_img_90(rotated_img_270);
         }
     }
@@ -73,26 +133,32 @@ protected:
     }
 
     Image gray(Image &image){
-        for(int i = 0 ; i <image.width ; i++){
+        // Iterate through each pixel in the image
+        for(int i = 0 ; i < image.width ; i++){
             for (int j = 0 ; j < image.height ; j ++){
                 unsigned int avg = 0 ;
+                // Calculate the average of the RGB values
                 for (int k = 0; k < 3; ++k) {
                     avg += image(i , j , k);
                 }
-                avg /=3 ;
+                avg /= 3 ;
+                // Set all RGB values to the average to grayscale the image
                 for (int k = 0; k < 3; ++k) {
-                    image(i , j , k) =avg;
-                }
-            }
-        }
+                    image(i , j , k) = avg;
+                }}}
+        // Return the grayscale image
         return image;
     }
 
     Image low_brightness(Image &image){
-        for(int i = 0 ; i <image.width ; i++){
+        // Iterate through each pixel in the image
+        for(int i = 0 ; i < image.width ; i++){
             for (int j = 0 ; j < image.height ; j ++){
+                // Iterate through each color channel (red, green, blue)
                 for (int k = 0; k < 3; ++k) {
-                    image(i,j,k) = image(i,j,k)* 1/2;
+                    // Reduce the color value by dividing it by 2
+                    image(i,j,k) = image(i,j,k) * 1/2;
+                    // If the color value becomes negative, set it to 0
                     if (image(i,j,k) < 0){
                         image(i,j,k) = 0 ;
                     }}}}
@@ -100,15 +166,18 @@ protected:
     }
 
     Image high_brightness(Image &image){
-        for(int i = 0 ; i <image.width ; i++){
+        // Iterate through each pixel in the image
+        for(int i = 0 ; i < image.width ; i++){
             for (int j = 0 ; j < image.height ; j ++){
-
-                for (int k = 0; k < 3; ++k) {
-                    if(image(i,j,k)*3/2 > 255){
+                // Iterate through each color channel (red, green, blue)
+                for (int k = 0; k < 3; ++k){
+                    if(image(i,j,k) * 3/2 > 255){
+                    // If the color value multiplied by 1.5 exceeds 255, set it to 255
                         image(i,j,k) = 255 ;
                     }
                     else {
-                        image(i,j,k)= image(i,j,k) *3/2;
+                        // Otherwise, increase the color value by multiplying it by 1.5
+                        image(i,j,k) = image(i,j,k) * 3/2;
                     }}}}
         return image;
     }
@@ -132,6 +201,7 @@ private:
             }
             catch (invalid_argument) {
             }
+        cin.clear();
         return load_img();
     }
 
@@ -184,7 +254,6 @@ private:
         cout << "5) brightness image" << endl;
     }
 
-
     int take_choice(int start, int end){
         // making sure to take a valid choice  from [start, end]
         int choice;
@@ -198,7 +267,6 @@ private:
         }
         return choice;
     }
-
 
     int take_rotation(){
         string rotation;
@@ -234,7 +302,6 @@ private:
         else{
             return low_brightness(image);
         }
-
     }
 
     Image do_operation() {
@@ -256,10 +323,8 @@ private:
             }
             case 5:{
                 return brightness(img);
-            }
-
-
-        }}
+            }}
+    }
 
 public:
 
@@ -269,35 +334,35 @@ public:
             cout <<"1) Load Image\n"
                    "2) Exit program\n";
             int choice = take_choice(1,2);
-            if (choice == 1){
+
+            if (choice == 2){
+                break;
+            }
+
+            else if(choice == 1){
                 string img_name = load_img();
+
                 while(true){
                     Image res_img = do_operation();
                     save_img(res_img);
                     cout << "1) Apply new filter on loaded image: " << img_name << endl <<
-                            "2) Back to main menu\n";
+                         "2) Back to main menu\n";
                     int s_choice = take_choice(1,2);
+
                     if(s_choice== 1){
                         continue;
                     }
                     else if(s_choice==2){
                         break ;
                     }
-                }}
-            else{
-                break ;
+                }
             }
-        }
-
-    }
-
-
+        }}
 };
 
 
 int main() {
-    FrontEnd front;
-    front.run();
-
+    FrontEnd Photo_Editor;
+    Photo_Editor.run();
     return 0;
 }
