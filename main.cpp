@@ -131,7 +131,17 @@ private:
 
         string img_name;
         cin >> img_name;
-        img.loadNewImage(img_name);
+        while(true){
+            try {
+                img.loadNewImage(img_name);
+                break;
+            }
+            catch (invalid_argument){
+                cout <<"Please enter a valid image\n";
+                cin >>img_name;
+            }
+
+        }
         cout << "Image loaded successfully" << endl;
     }
 
@@ -223,12 +233,21 @@ private:
     }
 
     Image brightness(Image &image){
+        cout << "1)High brightness"
+                "2)Low brightness \n";
+       int op = take_choice(1,2);
+        if (op == 1){
+            return high_brightness(image);
+        }
+        else{
+            return low_brightness(image);
+        }
 
     }
 
     Image do_operation() {
         take_operation();
-        int operation = take_choice(1, 3);
+        int operation = take_choice(1, 5);
         switch (operation) {
             case 1:{
                 int rotation = take_rotation();
@@ -254,9 +273,32 @@ public:
 
     void run() {
         program_menu();
-        load_img();
-        Image res_img = do_operation();
-        save_img(res_img);
+        while(true){
+            cout <<"1)load image\n"
+                   "2)exit the program\n";
+            int choice = take_choice(1,2);
+            if (choice == 1){
+                load_img();
+                while(true){
+                    Image res_img = do_operation();
+                    save_img(res_img);
+                    cout << "1)apply new filter on the same image\n"
+                            "2)back to main menu\n";
+                    int s_choice = take_choice(1,2);
+                    if(s_choice== 1){
+                        continue;
+                    }
+                    else if(s_choice==2){
+                        break ;
+                    }
+                }
+
+            }
+            else{
+                break ;
+            }
+        }
+
     }
 
 
