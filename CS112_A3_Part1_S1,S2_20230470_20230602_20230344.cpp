@@ -102,11 +102,6 @@ private:
 
     }
 
-    double sq(int m){
-        return m*m;
-    }
-
-
     bool check_circle_corners(Image &main_img, int width, int height, double ratio) {
         int x = width;
         int y = height;
@@ -136,7 +131,41 @@ private:
                 }
             }}}
 
+    void get_avg(Image &img, int x, int y, int size, int &red, int &green, int &blue) {
+        red = 0;
+        green = 0;
+        blue = 0;
+        for (int row = x; row < x + size; row++) {
+            for (int col = y; col < y + size; col++) {
+                red += img(row, col, 0);
+                green += img(row, col, 1);
+                blue += img(row, col, 2);
+            }
+        }
+        red /= sq(size);
+        green /= sq(size);
+        blue /= sq(size);
+    }
+
+
+    void blur_box(Image &img, int x, int y, int matrix_size,  Image &out) {
+        int avg_r = 0, avg_g = 0, avg_b = 0;
+        get_avg(img, x, y, matrix_size, avg_r, avg_g, avg_b);
+
+        for (int row = x; row < x + matrix_size; row++) {
+            for (int col = y; col < y + matrix_size; col++) {
+                out(row, col, 0) = avg_r;
+                out(row, col, 1) = avg_g;
+                out(row, col, 2) = avg_b;
+            }}
+    }
+
 protected:
+
+    static double sq(int m){
+        return m*m;
+    }
+
 
     Image invert_img(Image &main_img) {
         // Create a new image with the same dimensions
@@ -282,6 +311,18 @@ protected:
     }
 
 
+    Image blur_img(Image &img, int matrix_size = 16) {
+
+        Image res_image(img.width, img.height);
+        for(int width = 0; width <= img.width - matrix_size; width++){
+            for(int height = 0; height <= img.height - matrix_size; height++){
+                blur_box(img, width, height, matrix_size, res_image);
+            }
+        }
+        return res_image;
+    }
+
+
 };
 
 class FrontEnd: private EditImage {
@@ -352,6 +393,7 @@ private:
         cout << "4) Grayscale image" << endl;
         cout << "5) brightness image" << endl;
         cout << "6) Add frame" << endl;
+        cout << "7) Blur image" << endl;
     }
 
     int take_choice(int start, int end){
@@ -425,9 +467,16 @@ private:
         }
     }
 
+
+    Image blur_menu(){
+        cout << "Enter blur intensity" << endl;
+        int blur_intensity = take_choice(1, 3);
+        return blur_img(img, sq(2+blur_intensity));
+    }
+
     Image do_operation() {
         take_operation();
-        int operation = take_choice(1, 6);
+        int operation = take_choice(1, 7);
         switch (operation) {
             case 1:{
                 int rotation = take_rotation();
@@ -447,6 +496,9 @@ private:
             }
             case 6:{
                 return frame_menu();
+            }
+            case 7:{
+                return blur_menu();
             }
 
 
