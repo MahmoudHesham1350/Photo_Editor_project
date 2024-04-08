@@ -1,7 +1,7 @@
 /*
  * project file : CS112_A3_Part1_S1,S2_20230470_20230602_20230344.cpp
- * Mahmoud Hesham AbdEhafeez 20230602 : Did filters rotate image and invert image
- * Yahia Diaa Eldien Mohammed 20230470 : Did filters brightness and grayscale
+ * Mahmoud Hesham AbdEhafeez 20230602 : Did filter rotate image and invert image
+ * Yahia Diaa Eldien Mohammed 20230470 : Did filter brightness and grayscale
  * Mohamed Esam AbdElmonem 20230344 : Did filter flip image
  *
  * This project is a photo editor program.
@@ -174,33 +174,36 @@ protected:
 
 
     Image flip_img_horizontally(Image &image) {
+        Image res_img(image.width, image.height);
         int temp;
         for (int width = 0; width < image.width / 2; width++) { // Iterate only half width
             for (int height = 0; height < image.height; height++) {
                 // Swap pixels horizontally
                 for(int colour = 0; colour < 3; colour++) {
                     temp = image.getPixel(width, height, colour);
-                    image.setPixel(width, height, colour, image.getPixel(image.width - 1 - width, height, colour));
-                    image.setPixel(image.width - 1 - width, height, colour, temp);
+                    res_img.setPixel(width, height, colour, image.getPixel(image.width - 1 - width, height, colour));
+                    res_img.setPixel(image.width - 1 - width, height, colour, temp);
                 }}}
-        return image;
+        return res_img;
     }
 
 
     Image flip_img_vertically(Image &image) {
+        Image res_img(image.width, image.height);
         int temp;
         for (int height = 0; height < image.height / 2; height++) { // Iterate only half height
             for (int width = 0; width < image.width; width++) {
                 // Swap pixels vertically
                 for(int colour = 0; colour < 3; colour++) { // Loop through each color channel (assuming RGB)
                     temp = image.getPixel(width, height, colour); // Store the current pixel value in temp
-                    image.setPixel(width, height, colour, image.getPixel(width, image.height - 1 - height, colour)); // Replace current pixel with corresponding pixel from the other side
-                    image.setPixel(width, image.height - 1 - height, colour, temp); // Replace corresponding pixel from the other side with temp
+                    res_img.setPixel(width, height, colour, image.getPixel(width, image.height - 1 - height, colour)); // Replace current pixel with corresponding pixel from the other side
+                    res_img.setPixel(width, image.height - 1 - height, colour, temp); // Replace corresponding pixel from the other side with temp
                 }}}
-        return image;
+        return res_img;
     }
 
     Image gray(Image &image){
+        Image res_img(image.width, image.height);
         // Iterate through each pixel in the image
         for(int i = 0 ; i < image.width ; i++){
             for (int j = 0 ; j < image.height ; j ++){
@@ -212,25 +215,26 @@ protected:
                 avg /= 3 ;
                 // Set all RGB values to the average to grayscale the image
                 for (int k = 0; k < 3; ++k) {
-                    image(i , j , k) = avg;
+                    res_img(i , j , k) = avg;
                 }}}
         // Return the grayscale image
-        return image;
+        return res_img;
     }
 
     Image low_brightness(Image &image){
+        Image res_img(image.width, image.height);
         // Iterate through each pixel in the image
         for(int i = 0 ; i < image.width ; i++){
             for (int j = 0 ; j < image.height ; j ++){
                 // Iterate through each color channel (red, green, blue)
                 for (int k = 0; k < 3; ++k) {
                     // Reduce the color value by dividing it by 2
-                    image(i,j,k) = image(i,j,k) * 1/2;
+                    res_img(i,j,k) = image(i,j,k) * 1/2;
                     // If the color value becomes negative, set it to 0
                     if (image(i,j,k) < 0){
-                        image(i,j,k) = 0 ;
+                        res_img(i,j,k) = 0 ;
                     }}}}
-        return image;
+        return res_img;
     }
 
     Image high_brightness(Image &image){
