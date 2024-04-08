@@ -68,6 +68,74 @@ private:
         return res_img;
     }
 
+    void change_colors(Image &res_img, int width, int height, int color) {
+        int red = 0;
+        int green = 0;
+        int blue = 0;
+        switch (color) {
+            case 1:  // color red
+                red = 150;
+                break;
+            case 2:  // color green
+                green = 120;
+                break;
+            case 3:  // color blue
+                blue = 180;
+                break;
+            case 4:  // color black
+                red = 0;
+                green = 0;
+                blue = 0;
+                break;
+            case 5:  // color white
+                red = 255;
+                green = 255;
+                blue = 255;
+                break;
+            default:
+                break;
+        }
+
+        res_img(width, height, 0) = red;
+        res_img(width, height, 1) = green;
+        res_img(width, height, 2) = blue;
+
+    }
+
+    double sq(int m){
+        return m*m;
+    }
+
+
+    bool check_circle_corners(Image &main_img, int width, int height, double ratio) {
+        int x = width;
+        int y = height;
+        int x_dif = main_img.width - x;
+        int y_dif = main_img.height - y;
+
+        double r_sq = main_img.width * main_img.height * ratio;
+        // Check if the point lies within the quarter circles in the corners
+        if (sq(x) + sq(y) < r_sq ||            // Top-left quarter circle
+            (sq(x_dif) + sq(y) < r_sq) ||     // Top-right quarter circle
+            (sq(x) + sq(y_dif) < r_sq) ||     // Bottom-left quarter circle
+            (sq(x_dif) + sq(y_dif) < r_sq)    //Bottom-right quarter circle
+                )
+        {
+            return true; // Inside one of the quarter circles
+        } else {
+            return false; // Not inside any of the quarter circles
+        }
+    }
+
+
+    void add_circle_corners(Image &res_img, int color, double ratio) {
+        for (int width = 0; width < res_img.width; width++) {
+            for (int height = 0; height < res_img.height; height++) {
+                if (check_circle_corners(res_img, width, height, ratio)) {
+                    change_colors(res_img, width, height, color);
+                }
+            }}}
+
 protected:
 
     Image invert_img(Image &main_img) {
@@ -183,6 +251,33 @@ protected:
     }
 
 
+    Image add_frame(Image &main_img, int frame_color, const string& frame_type = "default") {
+        Image res_img(main_img.width, main_img.height);
+        int size_frame = max(main_img.width, main_img.height)/60; // getting a thickness of the frame relative to the size of the image
+        for (int width = 0; width < main_img.width; width++) {
+            for (int height = 0; height < main_img.height; height++) {
+
+                if (width < size_frame || width > main_img.width - size_frame ||
+                    height < size_frame || height > main_img.height - size_frame) {
+                    change_colors(res_img, width, height, frame_color);
+                }
+                else {
+                    for (int color = 0; color < 3; color++) {
+                        res_img(width, height, color) = main_img(width, height, color);
+                    }
+                }
+        }}
+
+        if (frame_type == "fancy") {
+            add_circle_corners(res_img, frame_color, 0.005);
+            add_circle_corners(res_img, 5, 0.002);
+            add_circle_corners(res_img, 4, 0.0005);
+        }
+
+        return res_img;
+    }
+
+
 };
 
 class FrontEnd: private EditImage {
@@ -252,6 +347,7 @@ private:
         cout << "3) Flip image" << endl;
         cout << "4) Grayscale image" << endl;
         cout << "5) brightness image" << endl;
+        cout << "6) Add frame" << endl;
     }
 
     int take_choice(int start, int end){
@@ -292,21 +388,42 @@ private:
         }
     }
 
-    Image brightness(Image &image){
+    Image brightness(){
         cout << "1)High brightness"
                 "2)Low brightness \n";
        int op = take_choice(1,2);
         if (op == 1){
-            return high_brightness(image);
+            return high_brightness(img);
         }
         else{
-            return low_brightness(image);
+            return low_brightness(img);
+        }
+    }
+
+    Image frame_menu(){
+        cout << "Choose frame color:" << endl;
+        cout << "1) Red" << endl;
+        cout << "2) Green" << endl;
+        cout << "3) Blue" << endl;
+        cout << "4) Black" << endl;
+        int frame_color = take_choice(1, 4);
+
+        cout << "Choose frame type:" << endl;
+        cout << "1) Add normal frame" << endl;
+        cout << "2) Add fancy frame" << endl;
+        int frame = take_choice(1, 2);
+
+        if (frame == 1) {
+            return add_frame(img, frame_color);
+        }
+        else {
+            return add_frame(img, frame_color, "fancy");
         }
     }
 
     Image do_operation() {
         take_operation();
-        int operation = take_choice(1, 5);
+        int operation = take_choice(1, 6);
         switch (operation) {
             case 1:{
                 int rotation = take_rotation();
@@ -322,8 +439,14 @@ private:
                 return gray(img);
             }
             case 5:{
-                return brightness(img);
-            }}
+                return brightness();
+            }
+            case 6:{
+                return frame_menu();
+            }
+
+
+        }
     }
 
 public:
@@ -364,5 +487,6 @@ public:
 int main() {
     FrontEnd Photo_Editor;
     Photo_Editor.run();
+
     return 0;
 }
