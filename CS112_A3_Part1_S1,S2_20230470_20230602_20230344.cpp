@@ -468,7 +468,7 @@ private:
         cout << "6) Add frame" << endl;
         cout << "7) Blur image" << endl;
         cout << "8) Crop image" << endl;
-        cout << "9) Convert image to black and white" << endl;
+        cout << "9) Black and white image" << endl;
     }
 
     int take_choice(int start, int end){
