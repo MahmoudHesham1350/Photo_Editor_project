@@ -311,7 +311,7 @@ protected:
     }
 
 
-    Image blur_img(Image &img, int matrix_size = 16) {
+    Image blur_img(Image &img, int matrix_size) {
 
         Image res_image(img.width, img.height);
         for(int width = 0; width <= img.width - matrix_size; width++){
@@ -320,6 +320,21 @@ protected:
             }
         }
         return res_image;
+    }
+
+
+    Image infrared(Image&image){
+        Image res_img(image.width, image.height);
+        Image gray_img = gray(image);
+        Image inverted = invert_img(gray_img);
+        for (int width = 0; width < image.width; width++) {
+            for (int height = 0; height < image.height; height++) {
+                res_img(width, height, 1) = inverted(width, height, 1);
+                res_img(width, height, 2) = inverted(width, height, 2);
+                res_img(width, height, 0) = 255;
+            }}
+
+        return res_img;
     }
 
 
