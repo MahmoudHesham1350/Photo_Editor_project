@@ -160,6 +160,21 @@ private:
             }}
     }
 
+    int calculateThreshold(Image &image) {
+        int total_sum = 0;
+        int total_pixels = image.width * image.height * 3; // Total number of color channels
+        // Calculate sum of all pixel values
+        for (int width = 0; width < image.width; width++) {
+            for (int height = 0; height < image.height; height++) {
+                for (int colour = 0; colour < 3; colour++) {
+                    total_sum += image.getPixel(width, height, colour);
+                }
+            }
+        }
+        // Calculate and return the average pixel value
+        return total_sum / total_pixels;
+    }
+
 protected:
 
     static double sq(int m){
@@ -323,6 +338,48 @@ protected:
     }
 
 
+    Image crop_image(Image& image1, int x, int y, int width, int height) {
+
+        // Create a new image with specified dimensions
+        Image cropped_image(width, height);
+
+        // Copy pixels from original image to cropped image
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                for (int colour = 0; colour < 3; colour++) {
+                    cropped_image.setPixel(i, j, colour, image1.getPixel(x + i, y + j, colour));
+                }}}
+        return cropped_image;
+
+    }
+
+
+    Image convertToBlackAndWhite(Image &image) {
+        int threshold = calculateThreshold(image); // Calculate the threshold based on the image's average intensity
+
+        Image res_image(image.width, image.height); // Create a new image with the same dimensions as the original
+        // Convert the image to black and white using the calculated threshold
+        for (int width = 0; width < image.width; width++) {
+            for (int height = 0; height < image.height; height++) {
+                // Calculate the average intensity of the pixel
+                int pixel_intensity = 0;
+                for (int colour = 0; colour < 3; colour++) {
+                    pixel_intensity += image.getPixel(width, height, colour);
+                }
+                pixel_intensity /= 3;
+
+                // Set pixel to black or white based on the threshold
+                int new_value = (pixel_intensity < threshold) ? 0 : 255;
+                for (int colour = 0; colour < 3; colour++) {
+                    res_image.setPixel(width, height, colour, new_value);
+                }
+            }
+        }
+
+        return res_image;
+    }
+
+
     Image infrared(Image&image){
         Image res_img(image.width, image.height);
         Image gray_img = gray(image);
@@ -336,6 +393,7 @@ protected:
 
         return res_img;
     }
+
 
 
 };
@@ -409,6 +467,8 @@ private:
         cout << "5) brightness image" << endl;
         cout << "6) Add frame" << endl;
         cout << "7) Blur image" << endl;
+        cout << "8) Crop image" << endl;
+        cout << "9) Convert image to black and white" << endl;
     }
 
     int take_choice(int start, int end){
@@ -489,9 +549,28 @@ private:
         return blur_img(img, sq(2+blur_intensity));
     }
 
+    Image crop_menu(){
+        int x, y, width, height;
+
+        // Get cropping dimensions from the user
+        cout << "Enter the x and y coordinates of the upper left corner of the cropped area: ";
+        cin >> x >> y;
+        cout << "Enter the width and height of the cropped area: ";
+        cin >> width >> height;
+
+        // Ensure the cropping dimensions are within the bounds of the original image
+        if (x < 0 || y < 0 || width <= 0 || height <= 0 || x + width > img.width || y + height > img.height) {
+            cout << "Invalid cropping dimensions. Please ensure the dimensions are within the bounds of the original image." << endl;
+            return crop_menu();
+        }
+
+        return crop_image(img, x, y, width, height);
+    }
+
+
     Image do_operation() {
         take_operation();
-        int operation = take_choice(1, 7);
+        int operation = take_choice(1, 9);
         switch (operation) {
             case 1:{
                 int rotation = take_rotation();
@@ -515,8 +594,17 @@ private:
             case 7:{
                 return blur_menu();
             }
+            case 8:{
+                return crop_menu();
+            }
+            case 9:{
+                return convertToBlackAndWhite(img);
+            }
 
 
+            default:{
+                return img;
+            }
         }
     }
 
