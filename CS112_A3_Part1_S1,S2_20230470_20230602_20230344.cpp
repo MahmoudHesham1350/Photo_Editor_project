@@ -492,6 +492,26 @@ protected:
         }
         return image ;
     }
+    void orange(Image &image){
+        unsigned int purpleStrength = 15;
+        for (int i = 0; i < image.width; ++i) {
+            for (int j = 0; j < image.height; ++j) {
+                //image(i, j, 0) =image(i, j, 0) + purpleStrength; // Increase red channel
+                if (image(i, j, 1) >= purpleStrength / 2) {
+                    image(i, j, 1) = image(i, j, 1)*0.6;
+                } else {
+                    image(i, j, 1) = 0; // Ensure it doesn't become negative
+                }
+                if (image(i, j, 2) >= purpleStrength / 2) {
+                    image(i, j, 2) = image(i, j, 1)*0;
+                } else {
+                    image(i, j, 1) = 0; // Ensure it doesn't become negative
+                }
+                //image(i, j, 2) =     image(i, j, 2) + purpleStrength; // Increase blue channel
+
+            }
+        }
+    }
 
 };
 
@@ -736,7 +756,9 @@ public:
                     }
                 }
             }
-        }}
+        }
+    }
+
 };
 
 
