@@ -394,7 +394,104 @@ protected:
         return res_img;
     }
 
+    Image merge_image(Image &image1, Image &image2) {
+        // Iterate over the dimensions of the smaller image
+        unsigned int min_width = std::min(image1.width, image2.width);
+        unsigned int min_height = std::min(image1.height, image2.height);
+        Image mergedImage(min_width, min_height);
+        for (int i = 0; i < min_width; ++i) {
+            for (int j = 0; j < min_height; ++j) {
+                for (int k = 0; k < 3; ++k) {
+                    // Calculate the average of corresponding pixels from both images
+                    mergedImage(i, j, k) = (image1(i, j, k) + image2(i, j, k)) / 2;
+                }
+            }
+        }
 
+        // Save the merged image
+        // resizeImageNearestNeighbor(mergedImage, min_width,min_height);
+        return mergedImage;
+    }
+
+    void EdgeDetection(Image &grayImage, Image &edgeImage) {
+        for (int i = 1; i < grayImage.width - 1; ++i) {
+            for (int j = 1; j < grayImage.height - 1; ++j) {
+                // Apply Sobel operator on grayscale image
+                int gx = (grayImage(i+1, j-1, 0) + 2*grayImage(i+1, j, 0) + grayImage(i+1, j+1, 0)) - (grayImage(i-1, j-1, 0) + 2*grayImage(i-1, j, 0) + grayImage(i-1, j+1, 0));
+                int gy = (grayImage(i-1, j+1, 0) + 2*grayImage(i, j+1, 0) + grayImage(i+1, j+1, 0)) - (grayImage(i-1, j-1, 0) + 2*grayImage(i, j-1, 0) + grayImage(i+1, j-1, 0));
+                int magnitude = sqrt(gx*gx + gy*gy);
+
+                // Edge thresholding
+                if (magnitude > 128)
+                    edgeImage(i, j, 0) = 255; // White
+                else
+                    edgeImage(i, j, 0) = 0; // Black
+            }
+        }
+    }
+    void edge_det(Image &originalImage, Image &grayImage){
+        // Create an empty image for grayscale conversion
+        // Image originalImage("eren and grisha (2).jpeg") ;
+        //Image grayImage(originalImage.width, originalImage.height);
+
+        // Convert the image to grayscale
+        for (int i = 0; i < originalImage.width; ++i) {
+            for (int j = 0; j < originalImage.height; ++j) {
+                // Get RGB values of each pixel
+                int r = originalImage(i, j, 0);
+                int g = originalImage(i, j, 1);
+                int b = originalImage(i, j, 2);
+
+                // Convert to grayscale by averaging RGB values
+                int gray = (r + g + b) / 3;
+
+                // Set grayscale value to each channel
+                for (int k = 0; k < 3; ++k) {
+                    grayImage(i, j, k) = gray;
+                }
+            }
+        }
+
+    }
+
+
+    Image main_edge(){
+        // Create an empty image for grayscale conversion
+        Image originalImage("luffi.jpeg") ;
+        Image grayImage(originalImage.width, originalImage.height);
+
+        // Convert the image to grayscale
+        edge_det(originalImage,grayImage);
+
+        // Save the grayscale image
+        grayImage.saveImage("Grayscale_Image_new.bmp");
+
+        // Create an empty image for edge detection
+        Image edgeImage(grayImage.width, grayImage.height);
+
+        // Detect edges on grayscale image
+        EdgeDetection(grayImage, edgeImage);
+
+        // Save the edge-detected image
+        return edgeImage;
+    }
+    Image purple(Image &image){
+        unsigned int purpleStrength = 15;
+        for (int i = 0; i < image.width; ++i) {
+            for (int j = 0; j < image.height; ++j) {
+                //image(i, j, 0) =image(i, j, 0) + purpleStrength; // Increase red channel
+                if (image(i, j, 1) >= purpleStrength / 2) {
+                    image(i, j, 1) = image(i, j, 1)*0.8;
+                } else {
+                    image(i, j, 1) = 0; // Ensure it doesn't become negative
+                }
+
+                //image(i, j, 2) =     image(i, j, 2) + purpleStrength; // Increase blue channel
+
+            }
+        }
+        return image ;
+    }
 
 };
 
