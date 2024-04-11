@@ -56,10 +56,10 @@ RM = "C:\Program Files\JetBrains\CLion 2023.3.4\bin\cmake\win\x64\bin\cmake.exe"
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = C:\Users\yahia\CLionProjects\git\Photo_Editor_project
+CMAKE_SOURCE_DIR = D:\git\Photo_Editor_project
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = C:\Users\yahia\CLionProjects\git\Photo_Editor_project\cmake-build-debug
+CMAKE_BINARY_DIR = D:\git\Photo_Editor_project\cmake-build-debug
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -86,9 +86,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\yahia\CLionProjects\git\Photo_Editor_project\cmake-build-debug\CMakeFiles C:\Users\yahia\CLionProjects\git\Photo_Editor_project\cmake-build-debug\\CMakeFiles\progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start D:\git\Photo_Editor_project\cmake-build-debug\CMakeFiles D:\git\Photo_Editor_project\cmake-build-debug\\CMakeFiles\progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\yahia\CLionProjects\git\Photo_Editor_project\cmake-build-debug\CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start D:\git\Photo_Editor_project\cmake-build-debug\CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -152,6 +152,30 @@ CS112_A3_Part1_S1,S2_20230470_20230602_20230344.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Photo_Editor_project.dir\build.make CMakeFiles/Photo_Editor_project.dir/CS112_A3_Part1_S1,S2_20230470_20230602_20230344.cpp.s
 .PHONY : CS112_A3_Part1_S1,S2_20230470_20230602_20230344.cpp.s
 
+trying.obj: trying.cpp.obj
+.PHONY : trying.obj
+
+# target to build an object file
+trying.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Photo_Editor_project.dir\build.make CMakeFiles/Photo_Editor_project.dir/trying.cpp.obj
+.PHONY : trying.cpp.obj
+
+trying.i: trying.cpp.i
+.PHONY : trying.i
+
+# target to preprocess a source file
+trying.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Photo_Editor_project.dir\build.make CMakeFiles/Photo_Editor_project.dir/trying.cpp.i
+.PHONY : trying.cpp.i
+
+trying.s: trying.cpp.s
+.PHONY : trying.s
+
+# target to generate assembly for a file
+trying.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Photo_Editor_project.dir\build.make CMakeFiles/Photo_Editor_project.dir/trying.cpp.s
+.PHONY : trying.cpp.s
+
 # Help Target
 help:
 	@echo The following are some of the valid targets for this Makefile:
@@ -164,6 +188,9 @@ help:
 	@echo ... CS112_A3_Part1_S1,S2_20230470_20230602_20230344.obj
 	@echo ... CS112_A3_Part1_S1,S2_20230470_20230602_20230344.i
 	@echo ... CS112_A3_Part1_S1,S2_20230470_20230602_20230344.s
+	@echo ... trying.obj
+	@echo ... trying.i
+	@echo ... trying.s
 .PHONY : help
 
 

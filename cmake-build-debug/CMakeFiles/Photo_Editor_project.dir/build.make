@@ -52,10 +52,10 @@ RM = "C:\Program Files\JetBrains\CLion 2023.3.4\bin\cmake\win\x64\bin\cmake.exe"
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = C:\Users\yahia\CLionProjects\git\Photo_Editor_project
+CMAKE_SOURCE_DIR = D:\git\Photo_Editor_project
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = C:\Users\yahia\CLionProjects\git\Photo_Editor_project\cmake-build-debug
+CMAKE_BINARY_DIR = D:\git\Photo_Editor_project\cmake-build-debug
 
 # Include any dependencies generated for this target.
 include CMakeFiles/Photo_Editor_project.dir/depend.make
@@ -69,32 +69,48 @@ include CMakeFiles/Photo_Editor_project.dir/progress.make
 include CMakeFiles/Photo_Editor_project.dir/flags.make
 
 CMakeFiles/Photo_Editor_project.dir/CS112_A3_Part1_S1,S2_20230470_20230602_20230344.cpp.obj: CMakeFiles/Photo_Editor_project.dir/flags.make
-CMakeFiles/Photo_Editor_project.dir/CS112_A3_Part1_S1,S2_20230470_20230602_20230344.cpp.obj: C:/Users/yahia/CLionProjects/git/Photo_Editor_project/CS112_A3_Part1_S1,S2_20230470_20230602_20230344.cpp
+CMakeFiles/Photo_Editor_project.dir/CS112_A3_Part1_S1,S2_20230470_20230602_20230344.cpp.obj: D:/git/Photo_Editor_project/CS112_A3_Part1_S1,S2_20230470_20230602_20230344.cpp
 CMakeFiles/Photo_Editor_project.dir/CS112_A3_Part1_S1,S2_20230470_20230602_20230344.cpp.obj: CMakeFiles/Photo_Editor_project.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:\Users\yahia\CLionProjects\git\Photo_Editor_project\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/Photo_Editor_project.dir/CS112_A3_Part1_S1,S2_20230470_20230602_20230344.cpp.obj"
-	C:\PROGRA~1\JETBRA~1\CLION2~1.4\bin\mingw\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Photo_Editor_project.dir/CS112_A3_Part1_S1,S2_20230470_20230602_20230344.cpp.obj -MF CMakeFiles\Photo_Editor_project.dir\CS112_A3_Part1_S1,S2_20230470_20230602_20230344.cpp.obj.d -o CMakeFiles\Photo_Editor_project.dir\CS112_A3_Part1_S1,S2_20230470_20230602_20230344.cpp.obj -c C:\Users\yahia\CLionProjects\git\Photo_Editor_project\CS112_A3_Part1_S1,S2_20230470_20230602_20230344.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=D:\git\Photo_Editor_project\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/Photo_Editor_project.dir/CS112_A3_Part1_S1,S2_20230470_20230602_20230344.cpp.obj"
+	C:\PROGRA~1\JETBRA~1\CLION2~1.4\bin\mingw\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Photo_Editor_project.dir/CS112_A3_Part1_S1,S2_20230470_20230602_20230344.cpp.obj -MF CMakeFiles\Photo_Editor_project.dir\CS112_A3_Part1_S1,S2_20230470_20230602_20230344.cpp.obj.d -o CMakeFiles\Photo_Editor_project.dir\CS112_A3_Part1_S1,S2_20230470_20230602_20230344.cpp.obj -c D:\git\Photo_Editor_project\CS112_A3_Part1_S1,S2_20230470_20230602_20230344.cpp
 
 CMakeFiles/Photo_Editor_project.dir/CS112_A3_Part1_S1,S2_20230470_20230602_20230344.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/Photo_Editor_project.dir/CS112_A3_Part1_S1,S2_20230470_20230602_20230344.cpp.i"
-	C:\PROGRA~1\JETBRA~1\CLION2~1.4\bin\mingw\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\yahia\CLionProjects\git\Photo_Editor_project\CS112_A3_Part1_S1,S2_20230470_20230602_20230344.cpp > CMakeFiles\Photo_Editor_project.dir\CS112_A3_Part1_S1,S2_20230470_20230602_20230344.cpp.i
+	C:\PROGRA~1\JETBRA~1\CLION2~1.4\bin\mingw\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E D:\git\Photo_Editor_project\CS112_A3_Part1_S1,S2_20230470_20230602_20230344.cpp > CMakeFiles\Photo_Editor_project.dir\CS112_A3_Part1_S1,S2_20230470_20230602_20230344.cpp.i
 
 CMakeFiles/Photo_Editor_project.dir/CS112_A3_Part1_S1,S2_20230470_20230602_20230344.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/Photo_Editor_project.dir/CS112_A3_Part1_S1,S2_20230470_20230602_20230344.cpp.s"
-	C:\PROGRA~1\JETBRA~1\CLION2~1.4\bin\mingw\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Users\yahia\CLionProjects\git\Photo_Editor_project\CS112_A3_Part1_S1,S2_20230470_20230602_20230344.cpp -o CMakeFiles\Photo_Editor_project.dir\CS112_A3_Part1_S1,S2_20230470_20230602_20230344.cpp.s
+	C:\PROGRA~1\JETBRA~1\CLION2~1.4\bin\mingw\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S D:\git\Photo_Editor_project\CS112_A3_Part1_S1,S2_20230470_20230602_20230344.cpp -o CMakeFiles\Photo_Editor_project.dir\CS112_A3_Part1_S1,S2_20230470_20230602_20230344.cpp.s
+
+CMakeFiles/Photo_Editor_project.dir/trying.cpp.obj: CMakeFiles/Photo_Editor_project.dir/flags.make
+CMakeFiles/Photo_Editor_project.dir/trying.cpp.obj: D:/git/Photo_Editor_project/trying.cpp
+CMakeFiles/Photo_Editor_project.dir/trying.cpp.obj: CMakeFiles/Photo_Editor_project.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=D:\git\Photo_Editor_project\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/Photo_Editor_project.dir/trying.cpp.obj"
+	C:\PROGRA~1\JETBRA~1\CLION2~1.4\bin\mingw\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Photo_Editor_project.dir/trying.cpp.obj -MF CMakeFiles\Photo_Editor_project.dir\trying.cpp.obj.d -o CMakeFiles\Photo_Editor_project.dir\trying.cpp.obj -c D:\git\Photo_Editor_project\trying.cpp
+
+CMakeFiles/Photo_Editor_project.dir/trying.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/Photo_Editor_project.dir/trying.cpp.i"
+	C:\PROGRA~1\JETBRA~1\CLION2~1.4\bin\mingw\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E D:\git\Photo_Editor_project\trying.cpp > CMakeFiles\Photo_Editor_project.dir\trying.cpp.i
+
+CMakeFiles/Photo_Editor_project.dir/trying.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/Photo_Editor_project.dir/trying.cpp.s"
+	C:\PROGRA~1\JETBRA~1\CLION2~1.4\bin\mingw\bin\G__~1.EXE $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S D:\git\Photo_Editor_project\trying.cpp -o CMakeFiles\Photo_Editor_project.dir\trying.cpp.s
 
 # Object files for target Photo_Editor_project
 Photo_Editor_project_OBJECTS = \
-"CMakeFiles/Photo_Editor_project.dir/CS112_A3_Part1_S1,S2_20230470_20230602_20230344.cpp.obj"
+"CMakeFiles/Photo_Editor_project.dir/CS112_A3_Part1_S1,S2_20230470_20230602_20230344.cpp.obj" \
+"CMakeFiles/Photo_Editor_project.dir/trying.cpp.obj"
 
 # External object files for target Photo_Editor_project
 Photo_Editor_project_EXTERNAL_OBJECTS =
 
 Photo_Editor_project.exe: CMakeFiles/Photo_Editor_project.dir/CS112_A3_Part1_S1,S2_20230470_20230602_20230344.cpp.obj
+Photo_Editor_project.exe: CMakeFiles/Photo_Editor_project.dir/trying.cpp.obj
 Photo_Editor_project.exe: CMakeFiles/Photo_Editor_project.dir/build.make
 Photo_Editor_project.exe: CMakeFiles/Photo_Editor_project.dir/linkLibs.rsp
 Photo_Editor_project.exe: CMakeFiles/Photo_Editor_project.dir/objects1.rsp
 Photo_Editor_project.exe: CMakeFiles/Photo_Editor_project.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=C:\Users\yahia\CLionProjects\git\Photo_Editor_project\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable Photo_Editor_project.exe"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=D:\git\Photo_Editor_project\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking CXX executable Photo_Editor_project.exe"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles\Photo_Editor_project.dir\link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -106,6 +122,6 @@ CMakeFiles/Photo_Editor_project.dir/clean:
 .PHONY : CMakeFiles/Photo_Editor_project.dir/clean
 
 CMakeFiles/Photo_Editor_project.dir/depend:
-	$(CMAKE_COMMAND) -E cmake_depends "MinGW Makefiles" C:\Users\yahia\CLionProjects\git\Photo_Editor_project C:\Users\yahia\CLionProjects\git\Photo_Editor_project C:\Users\yahia\CLionProjects\git\Photo_Editor_project\cmake-build-debug C:\Users\yahia\CLionProjects\git\Photo_Editor_project\cmake-build-debug C:\Users\yahia\CLionProjects\git\Photo_Editor_project\cmake-build-debug\CMakeFiles\Photo_Editor_project.dir\DependInfo.cmake "--color=$(COLOR)"
+	$(CMAKE_COMMAND) -E cmake_depends "MinGW Makefiles" D:\git\Photo_Editor_project D:\git\Photo_Editor_project D:\git\Photo_Editor_project\cmake-build-debug D:\git\Photo_Editor_project\cmake-build-debug D:\git\Photo_Editor_project\cmake-build-debug\CMakeFiles\Photo_Editor_project.dir\DependInfo.cmake "--color=$(COLOR)"
 .PHONY : CMakeFiles/Photo_Editor_project.dir/depend
 

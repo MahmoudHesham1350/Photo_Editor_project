@@ -48,6 +48,7 @@
 #include "Image_Class.h"
 #include <iomanip>
 #include <limits>
+#include <vector>
 using namespace std;
 
 class EditImage: protected Image {
@@ -131,33 +132,45 @@ private:
                 }
             }}}
 
-    void get_avg(Image &img, int x, int y, int size, int &red, int &green, int &blue) {
-        red = 0;
-        green = 0;
-        blue = 0;
-        for (int row = x; row < x + size; row++) {
-            for (int col = y; col < y + size; col++) {
-                red += img(row, col, 0);
-                green += img(row, col, 1);
-                blue += img(row, col, 2);
+    vector<vector<vector<int>>> summed_table(const Image &img) {
+        int width = img.width;
+        int height = img.height;
+
+        // Initialize the table with zeros
+        vector<vector<vector<int>>> table(width, vector<vector<int>>(height, vector<int>(3)));
+
+        // Compute the first row
+        for (int x = 0; x < width; x++) {
+            table[x][0][0] = img(x, 0, 0);
+            table[x][0][1] = img(x, 0, 1);
+            table[x][0][2] = img(x, 0, 2);
+            if (x > 0) {
+                for (int c = 0; c < 3; c++) {
+                    table[x][0][c] += table[x - 1][0][c];
+                }
             }
         }
-        red /= sq(size);
-        green /= sq(size);
-        blue /= sq(size);
-    }
 
+        // Compute the first column
+        for (int y = 1; y < height; y++) {
+            table[0][y][0] = img(0, y, 0);
+            table[0][y][1] = img(0, y, 1);
+            table[0][y][2] = img(0, y, 2);
+            for (int c = 0; c < 3; c++) {
+                table[0][y][c] += table[0][y - 1][c];
+            }
+        }
 
-    void blur_box(Image &img, int x, int y, int matrix_size,  Image &out) {
-        int avg_r = 0, avg_g = 0, avg_b = 0;
-        get_avg(img, x, y, matrix_size, avg_r, avg_g, avg_b);
+        // Compute the rest of the table
+        for (int x = 1; x < width; x++) {
+            for (int y = 1; y < height; y++) {
+                for (int c = 0; c < 3; c++) {
+                    table[x][y][c] = img(x, y, c) + table[x - 1][y][c] + table[x][y - 1][c] - table[x - 1][y - 1][c];
+                }
+            }
+        }
 
-        for (int row = x; row < x + matrix_size; row++) {
-            for (int col = y; col < y + matrix_size; col++) {
-                out(row, col, 0) = avg_r;
-                out(row, col, 1) = avg_g;
-                out(row, col, 2) = avg_b;
-            }}
+        return table;
     }
 
     int calculateThreshold(Image &image) {
@@ -180,7 +193,6 @@ protected:
     static double sq(int m){
         return m*m;
     }
-
 
     Image invert_img(Image &main_img) {
         // Create a new image with the same dimensions
@@ -326,15 +338,26 @@ protected:
     }
 
 
-    Image blur_img(Image &img, int matrix_size) {
+    Image blur_img(const Image &img, int matrix_size) {
+        vector<vector<vector<int>>> prefix_sum = summed_table(img);
 
         Image res_image(img.width, img.height);
-        for(int width = 0; width <= img.width - matrix_size; width++){
-            for(int height = 0; height <= img.height - matrix_size; height++){
-                blur_box(img, width, height, matrix_size, res_image);
+
+        for(int width = matrix_size; width <= img.width - matrix_size; width++){
+            for(int height = matrix_size; height <= img.height - matrix_size; height++){
+                for(int color = 0; color < 3; color++){
+                    double color_avg = (prefix_sum[width][height][color]
+                                        - prefix_sum[width][height-matrix_size][color]
+                                        - prefix_sum[width-matrix_size][height][color]
+                                        + prefix_sum[width-matrix_size][height-matrix_size][color])
+                                        / sq(matrix_size);
+
+                    res_image(width, height, color) = color_avg;
+                }
             }
         }
-        return res_image;
+
+        return crop_image(res_image, matrix_size, matrix_size, img.width - 2 * matrix_size, img.height - 2 * matrix_size);
     }
 
 
@@ -662,8 +685,8 @@ private:
 
     Image blur_menu(){
         cout << "Enter blur intensity" << endl;
-        int blur_intensity = take_choice(1, 3);
-        return blur_img(img, sq(2+blur_intensity));
+        int blur_intensity = take_choice(3, 10);
+        return blur_img(img, sq(blur_intensity));
     }
 
     Image crop_menu(){
