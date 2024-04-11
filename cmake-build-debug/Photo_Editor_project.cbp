@@ -85,9 +85,6 @@
 		<Unit filename="D:/git/Photo_Editor_project/CS112_A3_Part1_S1,S2_20230470_20230602_20230344.cpp">
 			<Option target="Photo_Editor_project"/>
 		</Unit>
-		<Unit filename="D:/git/Photo_Editor_project/trying.cpp">
-			<Option target="Photo_Editor_project"/>
-		</Unit>
 		<Unit filename="D:/git/Photo_Editor_project/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>
 		</Unit>

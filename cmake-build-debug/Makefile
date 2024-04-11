@@ -152,30 +152,6 @@ CS112_A3_Part1_S1,S2_20230470_20230602_20230344.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Photo_Editor_project.dir\build.make CMakeFiles/Photo_Editor_project.dir/CS112_A3_Part1_S1,S2_20230470_20230602_20230344.cpp.s
 .PHONY : CS112_A3_Part1_S1,S2_20230470_20230602_20230344.cpp.s
 
-trying.obj: trying.cpp.obj
-.PHONY : trying.obj
-
-# target to build an object file
-trying.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Photo_Editor_project.dir\build.make CMakeFiles/Photo_Editor_project.dir/trying.cpp.obj
-.PHONY : trying.cpp.obj
-
-trying.i: trying.cpp.i
-.PHONY : trying.i
-
-# target to preprocess a source file
-trying.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Photo_Editor_project.dir\build.make CMakeFiles/Photo_Editor_project.dir/trying.cpp.i
-.PHONY : trying.cpp.i
-
-trying.s: trying.cpp.s
-.PHONY : trying.s
-
-# target to generate assembly for a file
-trying.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Photo_Editor_project.dir\build.make CMakeFiles/Photo_Editor_project.dir/trying.cpp.s
-.PHONY : trying.cpp.s
-
 # Help Target
 help:
 	@echo The following are some of the valid targets for this Makefile:
@@ -188,9 +164,6 @@ help:
 	@echo ... CS112_A3_Part1_S1,S2_20230470_20230602_20230344.obj
 	@echo ... CS112_A3_Part1_S1,S2_20230470_20230602_20230344.i
 	@echo ... CS112_A3_Part1_S1,S2_20230470_20230602_20230344.s
-	@echo ... trying.obj
-	@echo ... trying.i
-	@echo ... trying.s
 .PHONY : help
 
 

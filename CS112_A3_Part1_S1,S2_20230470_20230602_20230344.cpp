@@ -258,7 +258,7 @@ protected:
         return res_img;
     }
 
-    Image gray(Image &image){
+    Image gray(const Image &image){
         Image res_img(image.width, image.height);
         // Iterate through each pixel in the image
         for(int i = 0 ; i < image.width ; i++){
@@ -403,20 +403,6 @@ protected:
     }
 
 
-    Image infrared(Image&image){
-        Image res_img(image.width, image.height);
-        Image gray_img = gray(image);
-        Image inverted = invert_img(gray_img);
-        for (int width = 0; width < image.width; width++) {
-            for (int height = 0; height < image.height; height++) {
-                res_img(width, height, 1) = inverted(width, height, 1);
-                res_img(width, height, 2) = inverted(width, height, 2);
-                res_img(width, height, 0) = 255;
-            }}
-
-        return res_img;
-    }
-
     Image merge_image(Image &image1, Image &image2) {
         // Iterate over the dimensions of the smaller image
         unsigned int min_width = std::min(image1.width, image2.width);
@@ -436,7 +422,9 @@ protected:
         return mergedImage;
     }
 
-    Image EdgeDetection(Image &grayImage) {
+
+    Image EdgeDetection(Image & main_img) {
+        Image grayImage = gray(main_img);
         Image edgeImage(grayImage.width, grayImage.height);
         for (int i = 1; i < grayImage.width - 1; ++i) {
             for (int j = 1; j < grayImage.height - 1; ++j) {
@@ -456,26 +444,21 @@ protected:
     }
 
 
-    Image main_edge(const Image & orignal){
-        // Create an empty image for grayscale conversion
-        //Image orignal("luffi.jpeg") ;
-        Image grayImage(orignal.width, orignal.height);
+    Image infrared(Image&image){
+        Image res_img(image.width, image.height);
+        Image gray_img = gray(image);
+        Image inverted = invert_img(gray_img);
+        for (int width = 0; width < image.width; width++) {
+            for (int height = 0; height < image.height; height++) {
+                res_img(width, height, 1) = inverted(width, height, 1);
+                res_img(width, height, 2) = inverted(width, height, 2);
+                res_img(width, height, 0) = 255;
+            }}
 
-        // Convert the image to grayscale
-        //edge_det(orignal, grayImage);
-
-        // Save the grayscale image
-        grayImage.saveImage("Grayscale_Image_new.bmp");
-
-        // Create an empty image for edge detection
-        Image edgeImage(grayImage.width, grayImage.height);
-
-        // Detect edges on grayscale image
-         return EdgeDetection(grayImage);
-
-        // Save the edge-detected image
-        return edgeImage;
+        return res_img;
     }
+
+
     Image purple(Image &image){
         unsigned int purpleStrength = 15;
         for (int i = 0; i < image.width; ++i) {
@@ -493,25 +476,28 @@ protected:
         }
         return image ;
     }
-    void orange(Image &image){
+
+
+    Image orange(Image &image){
+        Image res_img(image.width, image.height);
         unsigned int purpleStrength = 15;
         for (int i = 0; i < image.width; ++i) {
             for (int j = 0; j < image.height; ++j) {
                 //image(i, j, 0) =image(i, j, 0) + purpleStrength; // Increase red channel
                 if (image(i, j, 1) >= purpleStrength / 2) {
-                    image(i, j, 1) = image(i, j, 1)*0.6;
+                    res_img(i, j, 1) = image(i, j, 1)*0.6;
                 } else {
                     image(i, j, 1) = 0; // Ensure it doesn't become negative
                 }
                 if (image(i, j, 2) >= purpleStrength / 2) {
-                    image(i, j, 2) = image(i, j, 1)*0;
+                    res_img(i, j, 2) = image(i, j, 1)*0;
                 } else {
-                    image(i, j, 1) = 0; // Ensure it doesn't become negative
+                    res_img(i, j, 1) = 0; // Ensure it doesn't become negative
                 }
                 //image(i, j, 2) =     image(i, j, 2) + purpleStrength; // Increase blue channel
 
-            }
-        }
+        }}
+        return res_img ;
     }
 
 };
@@ -746,7 +732,7 @@ private:
               return main_merge();
             }
             case 11: {
-                return main_edge(img);
+                return EdgeDetection(img);
             };
 
 

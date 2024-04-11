@@ -80,12 +80,12 @@ clean: CMakeFiles/Photo_Editor_project.dir/clean
 CMakeFiles/Photo_Editor_project.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Photo_Editor_project.dir\build.make CMakeFiles/Photo_Editor_project.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Photo_Editor_project.dir\build.make CMakeFiles/Photo_Editor_project.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=D:\git\Photo_Editor_project\cmake-build-debug\CMakeFiles --progress-num=1,2,3 "Built target Photo_Editor_project"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=D:\git\Photo_Editor_project\cmake-build-debug\CMakeFiles --progress-num=1,2 "Built target Photo_Editor_project"
 .PHONY : CMakeFiles/Photo_Editor_project.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/Photo_Editor_project.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start D:\git\Photo_Editor_project\cmake-build-debug\CMakeFiles 3
+	$(CMAKE_COMMAND) -E cmake_progress_start D:\git\Photo_Editor_project\cmake-build-debug\CMakeFiles 2
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 CMakeFiles/Photo_Editor_project.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start D:\git\Photo_Editor_project\cmake-build-debug\CMakeFiles 0
 .PHONY : CMakeFiles/Photo_Editor_project.dir/rule
