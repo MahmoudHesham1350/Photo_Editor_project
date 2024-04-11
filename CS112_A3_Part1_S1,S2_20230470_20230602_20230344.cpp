@@ -436,7 +436,8 @@ protected:
         return mergedImage;
     }
 
-    void EdgeDetection(Image &grayImage, Image &edgeImage) {
+    Image EdgeDetection(Image &grayImage) {
+        Image edgeImage(grayImage.width, grayImage.height);
         for (int i = 1; i < grayImage.width - 1; ++i) {
             for (int j = 1; j < grayImage.height - 1; ++j) {
                 // Apply Sobel operator on grayscale image
@@ -451,40 +452,17 @@ protected:
                     edgeImage(i, j, 0) = 0; // Black
             }
         }
-    }
-    void edge_det(Image &originalImage, Image &grayImage){
-        // Create an empty image for grayscale conversion
-        // Image originalImage("eren and grisha (2).jpeg") ;
-        //Image grayImage(originalImage.width, originalImage.height);
-
-        // Convert the image to grayscale
-        for (int i = 0; i < originalImage.width; ++i) {
-            for (int j = 0; j < originalImage.height; ++j) {
-                // Get RGB values of each pixel
-                int r = originalImage(i, j, 0);
-                int g = originalImage(i, j, 1);
-                int b = originalImage(i, j, 2);
-
-                // Convert to grayscale by averaging RGB values
-                int gray = (r + g + b) / 3;
-
-                // Set grayscale value to each channel
-                for (int k = 0; k < 3; ++k) {
-                    grayImage(i, j, k) = gray;
-                }
-            }
-        }
-
+        return edgeImage;
     }
 
 
-    Image main_edge(){
+    Image main_edge(const Image & orignal){
         // Create an empty image for grayscale conversion
-        Image originalImage("luffi.jpeg") ;
-        Image grayImage(originalImage.width, originalImage.height);
+        //Image orignal("luffi.jpeg") ;
+        Image grayImage(orignal.width, orignal.height);
 
         // Convert the image to grayscale
-        edge_det(originalImage,grayImage);
+        //edge_det(orignal, grayImage);
 
         // Save the grayscale image
         grayImage.saveImage("Grayscale_Image_new.bmp");
@@ -493,7 +471,7 @@ protected:
         Image edgeImage(grayImage.width, grayImage.height);
 
         // Detect edges on grayscale image
-        EdgeDetection(grayImage, edgeImage);
+         return EdgeDetection(grayImage);
 
         // Save the edge-detected image
         return edgeImage;
@@ -609,6 +587,10 @@ private:
         cout << "7) Blur image" << endl;
         cout << "8) Crop image" << endl;
         cout << "9) Black and white image" << endl;
+        cout << "10) Merge two images "<<endl ;
+        cout << "11) edge detection "<<endl ;
+
+
     }
 
     int take_choice(int start, int end){
@@ -706,11 +688,31 @@ private:
 
         return crop_image(img, x, y, width, height);
     }
+    Image load_new_img() {
+        cout << "Enter image name with  any of the following\n"
+                "extensions (.jpg, .bmp, .png, .tga):";
+        string img_name;
+        cin >> img_name;
+        try {
+            Image image(img_name);
+            cout << "Image loaded successfully" << endl;
+            return image;
+        }
+        catch (invalid_argument) {
+        }
+        cin.clear();
+        return load_new_img();
+    }
+    Image main_merge (){
+        cout<<"insert the photo which you wanna merge it with the origin "<<endl;
+     Image image1 = load_new_img();
+        return merge_image(image1, img);
+    }
 
 
     Image do_operation() {
         take_operation();
-        int operation = take_choice(1, 9);
+        int operation = take_choice(1, 11);
         switch (operation) {
             case 1:{
                 int rotation = take_rotation();
@@ -740,6 +742,13 @@ private:
             case 9:{
                 return convertToBlackAndWhite(img);
             }
+            case 10:{
+              return main_merge();
+            }
+            case 11: {
+                return main_edge(img);
+            };
+
 
 
             default:{
