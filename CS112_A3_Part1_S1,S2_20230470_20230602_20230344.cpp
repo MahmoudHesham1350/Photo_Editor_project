@@ -778,7 +778,37 @@ public:
     }
 
 };
+#include "Image_Class.h" // Make sure to include the correct header file
+#include <string>
+#include <iostream>
 
+using namespace std;
+
+void resize_image(Image& image1, int new_width, int new_height, const string& savepath) {
+    // Create a new image with specified dimensions
+    Image resized_image(new_width, new_height);
+
+    // Calculate scaling factors
+    float x_scale = (float)image1.width / new_width;
+    float y_scale = (float)image1.height/ new_height;
+
+
+    for (int x = 0; x< new_width; x++) {
+        for (int y = 0; y < new_height; y++) {
+            // Corresponding pixel in original image
+            int orig_x = x * x_scale;
+            int orig_y = y * y_scale;
+
+            // Copy pixel values to resized image
+            for (int colour = 0; colour < 3; colour++) {
+                resized_image.setPixel(x, y, colour, image1.getPixel(orig_x, orig_y, colour));
+            }
+        }
+    }
+
+    // Save the resized image
+    resized_image.saveImage(savepath);
+}
 
 int main() {
     FrontEnd Photo_Editor;
