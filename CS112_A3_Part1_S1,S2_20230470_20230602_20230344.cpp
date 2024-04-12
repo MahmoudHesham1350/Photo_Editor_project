@@ -444,6 +444,28 @@ protected:
     }
 
 
+    Image resize_img(const Image& image1, int new_width, int new_height) {
+        // Create a new image with specified dimensions
+        Image resized_image(new_width, new_height);
+        // Calculate scaling factors
+        float x_scale = (float)image1.width / new_width;
+        float y_scale = (float)image1.height/ new_height;
+
+        for (int x = 0; x< new_width; x++) {
+            for (int y = 0; y < new_height; y++) {
+                // Corresponding pixel in original image
+                int orig_x = x * x_scale;
+                int orig_y = y * y_scale;
+
+                // Copy pixel values to resized image
+                for (int colour = 0; colour < 3; colour++) {
+                    resized_image.setPixel(x, y, colour, image1.getPixel(orig_x, orig_y, colour));
+                }}}
+
+        return resized_image;
+    }
+
+
     Image infrared(Image&image){
         Image res_img(image.width, image.height);
         Image gray_img = gray(image);
@@ -507,6 +529,7 @@ private:
     Image img;
 
     string load_img() {
+        cout << endl << setw(25) << "Loading image" << endl;
         cout << "Enter image name with  any of the following\n"
                 "extensions (.jpg, .bmp, .png, .tga):";
         string img_name;
@@ -518,7 +541,8 @@ private:
             }
             catch (invalid_argument) {
             }
-        cin.clear();
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
         return load_img();
     }
 
@@ -573,8 +597,9 @@ private:
         cout << "7) Blur image" << endl;
         cout << "8) Crop image" << endl;
         cout << "9) Black and white image" << endl;
-        cout << "10) Merge two images "<<endl ;
-        cout << "11) edge detection "<<endl ;
+        cout << "10) Merge two images "<< endl ;
+        cout << "11) Edge detection "<< endl;
+        cout << "12) Resize image" << endl;
 
 
     }
@@ -674,6 +699,7 @@ private:
 
         return crop_image(img, x, y, width, height);
     }
+
     Image load_new_img() {
         cout << "Enter image name with  any of the following\n"
                 "extensions (.jpg, .bmp, .png, .tga):";
@@ -689,16 +715,23 @@ private:
         cin.clear();
         return load_new_img();
     }
+
     Image main_merge (){
         cout<<"insert the photo which you wanna merge it with the origin "<<endl;
      Image image1 = load_new_img();
         return merge_image(image1, img);
     }
 
+    Image resize_menu(){
+        cout << "Enter new width and height" << endl;
+        int new_width, new_height;
+        cin >> new_width >> new_height;
+        return resize_img(img, new_width, new_height);
+    }
 
     Image do_operation() {
         take_operation();
-        int operation = take_choice(1, 11);
+        int operation = take_choice(1, 12);
         switch (operation) {
             case 1:{
                 int rotation = take_rotation();
@@ -733,9 +766,10 @@ private:
             }
             case 11: {
                 return EdgeDetection(img);
-            };
-
-
+            }
+            case 12:{
+                return resize_menu();
+            }
 
             default:{
                 return img;
@@ -778,37 +812,7 @@ public:
     }
 
 };
-#include "Image_Class.h" // Make sure to include the correct header file
-#include <string>
-#include <iostream>
 
-using namespace std;
-
-void resize_image(Image& image1, int new_width, int new_height, const string& savepath) {
-    // Create a new image with specified dimensions
-    Image resized_image(new_width, new_height);
-
-    // Calculate scaling factors
-    float x_scale = (float)image1.width / new_width;
-    float y_scale = (float)image1.height/ new_height;
-
-
-    for (int x = 0; x< new_width; x++) {
-        for (int y = 0; y < new_height; y++) {
-            // Corresponding pixel in original image
-            int orig_x = x * x_scale;
-            int orig_y = y * y_scale;
-
-            // Copy pixel values to resized image
-            for (int colour = 0; colour < 3; colour++) {
-                resized_image.setPixel(x, y, colour, image1.getPixel(orig_x, orig_y, colour));
-            }
-        }
-    }
-
-    // Save the resized image
-    resized_image.saveImage(savepath);
-}
 
 int main() {
     FrontEnd Photo_Editor;
