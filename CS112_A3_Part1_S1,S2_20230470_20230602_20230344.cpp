@@ -1,6 +1,6 @@
 /*
  * project file : CS112_A3_Part1_S1,S2_20230470_20230602_20230344.cpp
- * Mahmoud Hesham AbdEhafeez 20230602 : Did filter rotate image and invert image
+ * Mahmoud Hesham AbdElhafeez 20230602 : Did filter rotate image, invert image, add frame to image and blur image. bonus: infrared filter
  * Yahia Diaa Eldien Mohammed 20230470 : Did filter brightness and grayscale
  * Mohamed Esam AbdElmonem 20230344 : Did filter flip image
  *
@@ -140,32 +140,32 @@ private:
         vector<vector<vector<int>>> table(width, vector<vector<int>>(height, vector<int>(3)));
 
         // Compute the first row
-        for (int x = 0; x < width; x++) {
-            table[x][0][0] = img(x, 0, 0);
-            table[x][0][1] = img(x, 0, 1);
-            table[x][0][2] = img(x, 0, 2);
-            if (x > 0) {
-                for (int c = 0; c < 3; c++) {
-                    table[x][0][c] += table[x - 1][0][c];
+        for (int col = 0; col < width; col++) {
+            table[col][0][0] = img(col, 0, 0);
+            table[col][0][1] = img(col, 0, 1);
+            table[col][0][2] = img(col, 0, 2);
+            if (col > 0) {
+                for (int color = 0; color < 3; color++) {
+                    table[col][0][color] += table[col - 1][0][color];
                 }
             }
         }
 
         // Compute the first column
-        for (int y = 1; y < height; y++) {
-            table[0][y][0] = img(0, y, 0);
-            table[0][y][1] = img(0, y, 1);
-            table[0][y][2] = img(0, y, 2);
-            for (int c = 0; c < 3; c++) {
-                table[0][y][c] += table[0][y - 1][c];
+        for (int row = 1; row < height; row++) {
+            table[0][row][0] = img(0, row, 0);
+            table[0][row][1] = img(0, row, 1);
+            table[0][row][2] = img(0, row, 2);
+            for (int color = 0; color < 3; color++) {
+                table[0][row][color] += table[0][row - 1][color];
             }
         }
 
         // Compute the rest of the table
-        for (int x = 1; x < width; x++) {
-            for (int y = 1; y < height; y++) {
-                for (int c = 0; c < 3; c++) {
-                    table[x][y][c] = img(x, y, c) + table[x - 1][y][c] + table[x][y - 1][c] - table[x - 1][y - 1][c];
+        for (int col = 1; col < width; col++) {
+            for (int row = 1; row < height; row++) {
+                for (int color = 0; color < 3; color++) {
+                    table[col][row][color] = img(col, row, color) + table[col - 1][row][color] + table[col][row - 1][color] - table[col - 1][row - 1][color];
                 }
             }
         }
@@ -190,8 +190,8 @@ private:
 
 protected:
 
-    static double sq(int m){
-        return m*m;
+    static double sq(int num){
+        return num*num;
     }
 
     Image invert_img(Image &main_img) {
@@ -225,6 +225,9 @@ protected:
         Image rotated_img_270 = rotate_img_90(rotated_img_180);
         if (rotation == 270) {
             return rotate_img_90(rotated_img_270);
+        }
+        else {
+            return main_img;
         }
     }
 
@@ -481,45 +484,63 @@ protected:
     }
 
 
-    Image purple(Image &image){
+    Image purple(const Image &image){
+
+        Image result(image.width,image.height);
+        for(int i = 0; i<image.width;i++){
+            for(int  j = 0 ; j<image.height;j++){
+                for(int k = 0 ; k<image.channels ; k++){
+                    result(i,j,k)= image(i,j,k);
+                }
+            }
+        }
         unsigned int purpleStrength = 15;
         for (int i = 0; i < image.width; ++i) {
             for (int j = 0; j < image.height; ++j) {
                 //image(i, j, 0) =image(i, j, 0) + purpleStrength; // Increase red channel
-                if (image(i, j, 1) >= purpleStrength / 2) {
-                    image(i, j, 1) = image(i, j, 1)*0.8;
+                if (result(i, j, 1) >= purpleStrength / 2) {
+                    result(i, j, 1) = result(i, j, 1)*0.8;
                 } else {
-                    image(i, j, 1) = 0; // Ensure it doesn't become negative
+                    result(i, j, 1) = 0; // Ensure it doesn't become negative
                 }
 
                 //image(i, j, 2) =     image(i, j, 2) + purpleStrength; // Increase blue channel
-
+//                for(int k = 0 ; k<3; k++){
+//                    result(i,j,k) = image(i,j,k);
+//                }
             }
         }
-        return image ;
+        return result ;
     }
 
 
-    Image orange(Image &image){
-        Image res_img(image.width, image.height);
+    Image orange(const Image &image){
+        Image result(image.width,image.height);
+        for(int i = 0; i<image.width;i++){
+            for(int  j = 0 ; j<image.height;j++){
+                for(int k = 0 ; k<image.channels ; k++){
+                    result(i,j,k)= image(i,j,k);
+                }
+            }
+        }
         unsigned int purpleStrength = 15;
         for (int i = 0; i < image.width; ++i) {
             for (int j = 0; j < image.height; ++j) {
                 //image(i, j, 0) =image(i, j, 0) + purpleStrength; // Increase red channel
-                if (image(i, j, 1) >= purpleStrength / 2) {
-                    res_img(i, j, 1) = image(i, j, 1)*0.6;
+                if (result(i, j, 1) >= purpleStrength / 2) {
+                    result(i, j, 1) = result(i, j, 1)*0.6;
                 } else {
-                    image(i, j, 1) = 0; // Ensure it doesn't become negative
+                    result(i, j, 1) = 0; // Ensure it doesn't become negative
                 }
                 if (image(i, j, 2) >= purpleStrength / 2) {
-                    res_img(i, j, 2) = image(i, j, 1)*0;
+                    result(i, j, 2) = image(i, j, 1)*0;
                 } else {
-                    res_img(i, j, 1) = 0; // Ensure it doesn't become negative
+                    result(i, j, 1) = 0; // Ensure it doesn't become negative
                 }
                 //image(i, j, 2) =     image(i, j, 2) + purpleStrength; // Increase blue channel
 
-        }}
-        return res_img ;
+            }}
+        return result ;
     }
 
 };
@@ -529,9 +550,6 @@ private:
     Image img;
 
     string load_img() {
-        cout << endl << setw(25) << "Loading image" << endl;
-        cout << "Enter image name with  any of the following\n"
-                "extensions (.jpg, .bmp, .png, .tga):";
         string img_name;
         cin >> img_name;
             try {
@@ -539,10 +557,9 @@ private:
                 cout << "Image loaded successfully" << endl;
                 return img_name;
             }
-            catch (invalid_argument) {
+            catch (invalid_argument const &e) {
+                cerr << e.what() << endl;
             }
-            cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
         return load_img();
     }
 
@@ -564,9 +581,6 @@ private:
     }
 
     void save_img(Image &res_img) {
-        cout << setw(25) << "Saving image" << endl;
-        cout << "Enter image name with  any of the following\n"
-                "extensions (.jpg, .bmp, .png, .tga):";
         string img_name;
         cin >> img_name;
         if(valid_output(img_name)){
@@ -576,7 +590,7 @@ private:
         }
         else {
             cerr << "Invalid image name" << endl;
-
+            cerr << "Try name with valid extension" << endl;
             save_img(res_img);
         }
     }
@@ -588,18 +602,22 @@ private:
     }
 
     void take_operation(){
+        cout << "Filters menu" << endl;
         cout << "1) Rotate image" << endl;
         cout << "2) Invert image" << endl;
         cout << "3) Flip image" << endl;
-        cout << "4) Grayscale image" << endl;
-        cout << "5) brightness image" << endl;
+        cout << "4) Grayscale Filter" << endl;
+        cout << "5) brightness Filter" << endl;
         cout << "6) Add frame" << endl;
         cout << "7) Blur image" << endl;
         cout << "8) Crop image" << endl;
-        cout << "9) Black and white image" << endl;
+        cout << "9) Black and white Filter" << endl;
         cout << "10) Merge two images "<< endl ;
         cout << "11) Edge detection "<< endl;
         cout << "12) Resize image" << endl;
+        cout << "13) Infrared Filter" << endl;
+        cout << "14) Purple filter" << endl;
+        cout << "15) Orange filter" << endl;
 
 
     }
@@ -706,14 +724,14 @@ private:
         string img_name;
         cin >> img_name;
         try {
-            Image image(img_name);
+            img.loadNewImage(img_name);
             cout << "Image loaded successfully" << endl;
-            return image;
+            return img_name;
         }
-        catch (invalid_argument) {
+        catch (invalid_argument const &e) {
+            cerr << e.what() << endl;
         }
-        cin.clear();
-        return load_new_img();
+        return load_img();
     }
 
     Image main_merge (){
@@ -731,7 +749,7 @@ private:
 
     Image do_operation() {
         take_operation();
-        int operation = take_choice(1, 12);
+        int operation = take_choice(1, 15);
         switch (operation) {
             case 1:{
                 int rotation = take_rotation();
@@ -770,6 +788,15 @@ private:
             case 12:{
                 return resize_menu();
             }
+            case 13:{
+                return infrared(img);
+            }
+            case 14:{
+                return purple(img);
+            }
+            case 15:{
+                return orange(img);
+            }
 
             default:{
                 return img;
@@ -790,12 +817,20 @@ public:
                 break;
             }
 
-            else if(choice == 1){
+            if(choice == 1){
+                cout << endl << setw(25) << "Loading image" << endl;
+                cout << "Enter image name with  any of the following\n"
+                        "extensions (.jpg, .bmp, .png, .tga):";
                 string img_name = load_img();
 
                 while(true){
                     Image res_img = do_operation();
+
+                    cout << endl << setw(25) << "Saving image" << endl;
+                    cout << "Enter image name with  any of the following\n"
+                            "extensions (.jpg, .bmp, .png, .tga):";
                     save_img(res_img);
+
                     cout << "1) Apply new filter on loaded image: " << img_name << endl <<
                          "2) Back to main menu\n";
                     int s_choice = take_choice(1,2);
@@ -803,8 +838,9 @@ public:
                     if(s_choice== 1){
                         continue;
                     }
-                    else if(s_choice==2){
-                        break ;
+
+                    if(s_choice==2){
+                        break;
                     }
                 }
             }
