@@ -1,8 +1,8 @@
 /*
  * project file : CS112_A3_Part1_S1,S2_20230470_20230602_20230344.cpp
  * Mahmoud Hesham AbdElhafeez 20230602 : Did filter rotate image, invert image, add frame to image and blur image. bonus: infrared filter
- * Yahia Diaa Eldien Mohammed 20230470 : Did filter brightness and grayscale
- * Mohamed Esam AbdElmonem 20230344 : Did filter flip image
+ * Yahia Diaa Eldien Mohammed 20230470 : Did filter brightness, grayscale, edge detection, merge two images. bonus: purple filter. orange filter: additional not in assignment.
+ * Mohamed Esam AbdElmonem 20230344 : Did filter flip image, crop image, resize image and black and white filter.
  *
  * This project is a photo editor program.
  * The code is divided between two classes: FrontEnd and EditImage.
@@ -43,6 +43,58 @@
  *      If any of the color values exceed 255, set them to 255.
  *      Return the image with increased brightness.
  *
+ *  Add frame:
+ *      Create a new image with the same size as the original image.
+ *      Calculate the thickness of the frame (size_frame) based on the size of the input image.
+ *      Loop through each pixel in the input image:
+ *          If the pixel is on the border of the image, change its color to the specified frame_color.
+ *          Otherwise, copy the color of the pixel from the input image to the corresponding pixel in the res_img.
+ *      If the frame_type is "fancy":
+ *          Add three circles at the corners of the image with different sizes and colors.
+ *      Return the resulting image res_img.
+ *
+ *  blur:
+ *      For each pixel in the image, calculate the average of the surrounding pixels.
+ *      calculating the average of the surrounding pixels using prefix sum matrix
+ *      Set all three color channels of the pixel to this average value to blur the image.
+ *      Return the blurred image.
+ *
+ *   infrared:
+ *      Create a new image called res_img with the same width and height as the input image.
+ *      Convert the input image to grayscale and store it in a new image called gray_img.
+ *      Invert the colors of the grayscale image and store the result in a new image called inverted.
+ *      Loop through each pixel in the input image:
+ *          Set the green and blue channels of the res_img to the corresponding channels of the inverted image.
+ *          Set the red channel of the res_img to 255 (maximum intensity).
+ *      Return the resulting image res_img.
+ *
+ *  crop:
+ *      Accept the coordinates (x, y) of the top-left corner of the cropping area, as well as the width and height of the desired cropped area.
+ *      Create a new blank image with dimensions equal to the width and height of the cropping area.
+ *      Iterate through each pixel in the cropping area of the original image.
+ *      Copy the corresponding pixel values from the original image to the new cropped image.
+ *      Save the cropped image to the specified file path.
+ *
+ *  resize:
+ *      Accept the original image, new width, new height, and save path as input parameters.
+ *      Create a new blank image with dimensions equal to the new width and height.
+ *      Calculate the scaling factors for width and height.
+ *      Iterate over each pixel in the new image:
+ *      Calculate the corresponding pixel coordinates in the original image using the scaling factors.
+ *      Copy the pixel values from the original image to the new image.
+ *      Save the resized image to the specified file path.
+ *
+ *  black and white:
+ *      Calculate Threshold:
+ *          Iterate through each pixel in the image.
+ *          Sum up the values of all color channels.
+ *          Divide the sum by the total number of pixels (width * height * 3) to get the average pixel value. This is the threshold.
+ *      Convert to Black and White:
+ *          Calculate the threshold.
+ *          Iterate through each pixel in the image.
+ *          Calculate the average intensity by summing up the values of all color channels and dividing by 3.
+ *          If the average intensity is less than the threshold, set the pixel value to 0 (black), otherwise set it to 255 (white).
+ *          Save the modified image.
  *
 */
 #include "Image_Class.h"
