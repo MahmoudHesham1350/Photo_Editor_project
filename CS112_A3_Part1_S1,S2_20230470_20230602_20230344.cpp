@@ -188,10 +188,9 @@ private:
         int width = img.width;
         int height = img.height;
 
-        // Initialize the table with zeros
         vector<vector<vector<int>>> table(width, vector<vector<int>>(height, vector<int>(3)));
 
-        // Compute the first row
+        // compute the first row
         for (int col = 0; col < width; col++) {
             table[col][0][0] = img(col, 0, 0);
             table[col][0][1] = img(col, 0, 1);
@@ -203,7 +202,7 @@ private:
             }
         }
 
-        // Compute the first column
+        // compute the first column
         for (int row = 1; row < height; row++) {
             table[0][row][0] = img(0, row, 0);
             table[0][row][1] = img(0, row, 1);
@@ -213,7 +212,6 @@ private:
             }
         }
 
-        // Compute the rest of the table
         for (int col = 1; col < width; col++) {
             for (int row = 1; row < height; row++) {
                 for (int color = 0; color < 3; color++) {
@@ -398,21 +396,27 @@ protected:
 
         Image res_image(img.width, img.height);
 
-        for(int width = matrix_size; width <= img.width - matrix_size; width++){
-            for(int height = matrix_size; height <= img.height - matrix_size; height++){
+        for(int width = 0; width < img.width; width++){
+            for(int height = 0; height < img.height; height++){
                 for(int color = 0; color < 3; color++){
-                    double color_avg = (prefix_sum[width][height][color]
-                                        - prefix_sum[width][height-matrix_size][color]
-                                        - prefix_sum[width-matrix_size][height][color]
-                                        + prefix_sum[width-matrix_size][height-matrix_size][color])
-                                        / sq(matrix_size);
 
-                    res_image(width, height, color) = color_avg;
-                }
-            }
-        }
+                    int start_width = max(0, width-matrix_size + 1);
+                    int end_width = min(img.width-1, width);
+                    int start_height = max(0, height-matrix_size + 1);
+                    int end_height = min(img.height-1, height);
+                    double num_pixels = (end_width-start_width + 1) * (end_height-start_height + 1);
 
-        return crop_image(res_image, matrix_size, matrix_size, img.width - 2 * matrix_size, img.height - 2 * matrix_size);
+                        double color_avg = (prefix_sum[width][height][color]
+                                            - prefix_sum[width][max(0, height-matrix_size)][color]
+                                            - prefix_sum[max(0, width-matrix_size)][height][color]
+                                            + prefix_sum[max(0, width-matrix_size)][max(0, height-matrix_size)][color])
+                                           / num_pixels;
+
+                        res_image(width, height, color) = color_avg;
+
+            }}}
+
+        return res_image;
     }
 
 
