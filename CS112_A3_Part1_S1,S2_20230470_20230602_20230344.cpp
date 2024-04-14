@@ -2,7 +2,7 @@
  * project file : CS112_A3_Part1_S1,S2_20230470_20230602_20230344.cpp
  * Mahmoud Hesham AbdElhafeez 20230602 : Did filter rotate image, invert image, add frame to image and blur image. bonus: infrared filter
  * Yahia Diaa Eldien Mohammed 20230470 : Did filter brightness, grayscale, edge detection, merge two images. bonus: purple filter. orange filter: additional not in assignment.
- * Mohamed Esam AbdElmonem 20230344 : Did filter flip image, crop image, resize image and black and white filter.
+ * Mohamed Esam AbdElmonem 20230344 : Did filter flip image, crop image, resize image and black and white filter. bonus: add sunlight.
  *
  * This project is a photo editor program.
  * The code is divided between two classes: FrontEnd and EditImage.
@@ -96,11 +96,33 @@
  *          If the average intensity is less than the threshold, set the pixel value to 0 (black), otherwise set it to 255 (white).
  *          Save the modified image.
  *
+ *  Add sunlight:
+ *      Calculate the average brightness of the image.
+ *      Determine the sunlight strength based on the average brightness.
+ *      For each pixel in the image:
+ *          a. Increase the red channel value by 15.
+ *          b. Increase the green channel value by 40.
+ *          c. Decrease the blue channel value by 15.
+ *          d. Ensure that each channel value stays within the range [0, 255].
+ *      Save the resulting image.
+ *
+ *  purple function:
+ *      Create a new image result with the same dimensions as the input image.
+ *      Copy each pixel from image to result.
+ *      Define a purpleStrength variable.
+ *      Iterate over each pixel in the image:
+ *          If the green channel value of the pixel is greater than or equal to half of purpleStrength:
+ *          Reduce the green channel value by 20%.
+ *          Otherwise, set the green channel value to 0.
+ *
+ *
+ *
 */
 #include "Image_Class.h"
 #include <iomanip>
 #include <limits>
 #include <vector>
+#include <cmath>
 using namespace std;
 
 class EditImage: protected Image {
@@ -236,6 +258,20 @@ private:
         }
         // Calculate and return the average pixel value
         return total_sum / total_pixels;
+    }
+
+    // Define a function to calculate the average brightness of the image
+    unsigned int calculateAverageBrightness(const Image &image) {
+        unsigned int totalBrightness = 0;
+        int numPixels = image.width * image.height * image.channels;
+        for (int i = 0; i < image.width; ++i) {
+            for (int j = 0; j < image.height; ++j) {
+                for (int k = 0; k < image.channels; ++k) {
+                    totalBrightness += image.getPixel(i, j, k);
+                }
+            }
+        }
+        return totalBrightness / numPixels;
     }
 
 protected:
@@ -599,6 +635,37 @@ protected:
         return result ;
     }
 
+
+    Image addSunlight(const Image &image) {
+        Image result(image.width, image.height);
+
+        unsigned int averageBrightness = calculateAverageBrightness(image);
+
+
+        unsigned int sunlightStrength = sqrt(averageBrightness) / 2;
+
+        // Apply sunlight effect
+        for (int i = 0; i < image.width; ++i) {
+            for (int j = 0; j < image.height; ++j) {
+
+                int red = image.getPixel(i, j, 0) + 15;
+                int green = image.getPixel(i, j, 1) + 40;
+                int blue = image.getPixel(i, j, 2) - 15;
+                // Ensure pixel values don't exceed 255 or fall below 0
+                red = red > 255 ? 255 : (red < 0 ? 0 : red);
+                green = green > 255 ? 255 : (green < 0 ? 0 : green);
+                blue = blue > 255 ? 255 : (blue < 0 ? 0 : blue);
+
+
+                result.setPixel(i, j, 0, red);
+                result.setPixel(i, j, 1, green);
+                result.setPixel(i, j, 2, blue);
+            }
+        }
+
+        return result;
+    }
+
 };
 
 class FrontEnd: private EditImage {
@@ -673,9 +740,8 @@ private:
         cout << "12) Resize image" << endl;
         cout << "13) Infrared Filter" << endl;
         cout << "14) Purple filter" << endl;
-        cout << "15) Orange filter" << endl;
-
-
+        cout << "15) Add Sunlight" << endl;
+        cout << "16) Orange filter" << endl;
     }
 
     int take_choice(int start, int end){
@@ -805,7 +871,7 @@ private:
 
     Image do_operation() {
         take_operation();
-        int operation = take_choice(1, 15);
+        int operation = take_choice(1, 16);
         switch (operation) {
             case 1:{
                 int rotation = take_rotation();
@@ -851,6 +917,9 @@ private:
                 return purple(img);
             }
             case 15:{
+                return addSunlight(img);
+            }
+            case 16:{
                 return orange(img);
             }
 
